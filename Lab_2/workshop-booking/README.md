@@ -215,3 +215,17 @@ it uses the status code.
 controlled environment you create. The provider intentionally has no failure or
 sleep endpoints. Simulate unavailable, delayed and incompatible responses using
 a local HTTP test server outside the consumer's real HTTP-client boundary.
+
+## Integration tests (added)
+
+Test sources: `booking-service/src/test/java/...` and `membership-registry/src/test/java/...`
+(classes named `*IT`, run by Maven Failsafe). Test profile: `application-test.properties` in each module.
+
+```powershell
+.\mvnw.cmd verify                                   # all modules (Surefire + Failsafe)
+.\mvnw.cmd -pl booking-service verify               # one module
+.\mvnw.cmd -pl booking-service verify "-Dit.test=BookingBatchTransactionIT"
+```
+
+`PostgresCompatibilityIT` needs a container runtime (Docker); without it the class is skipped.
+Plain `mvnw test` runs only unit tests (`*Test`), not the `*IT` classes.
